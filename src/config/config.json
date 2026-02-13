@@ -1,0 +1,35 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "Parthik@2026",
+    "database": "scorebook",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "logging": false
+  },
+  "test": {
+    "username": "postgres",
+    "password": "Parthik@2026",
+    "database": "scorebook_test",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "logging": false
+  },
+  "production": {
+    "username": "postgres",
+    "password": "Parthik@2026",
+    "database": "scorebook_prod",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres",
+    "logging": false,
+    "pool": {
+      "max": 5,
+      "min": 2,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  }
+}

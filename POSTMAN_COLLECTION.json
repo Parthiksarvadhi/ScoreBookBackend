@@ -1,0 +1,363 @@
+{
+  "info": {
+    "name": "ScoreBook API",
+    "description": "Real-Time Cricket Scoring & Match Analytics System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"scorer@example.com\",\n  \"password\": \"SecurePass123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"scorer@example.com\",\n  \"password\": \"SecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/refresh",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["auth", "refresh"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/auth/me",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Match Management",
+      "item": [
+        {
+          "name": "Create Match",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamAId\": \"550e8400-e29b-41d4-a716-446655440001\",\n  \"teamBId\": \"550e8400-e29b-41d4-a716-446655440002\",\n  \"matchType\": \"T20\",\n  \"overs\": 20,\n  \"venue\": \"Eden Gardens, Kolkata\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/matches",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["matches"]
+            }
+          }
+        },
+        {
+          "name": "List Matches",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/matches?status=live&page=1&limit=20",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["matches"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "live"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Match Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/matches/{{matchId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["matches", "{{matchId}}"]
+            }
+          }
+        },
+        {
+          "name": "Start Match (Acquire Lock)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/matches/{{matchId}}/start",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["matches", "{{matchId}}", "start"]
+            }
+          }
+        },
+        {
+          "name": "End Match (Release Lock)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/matches/{{matchId}}/end",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["matches", "{{matchId}}", "end"]
+            }
+          }
+        },
+        {
+          "name": "Abandon Match",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/matches/{{matchId}}/abandon",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["matches", "{{matchId}}", "abandon"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Operations",
+      "item": [
+        {
+          "name": "Force Release Lock",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminAccessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"force_release\",\n  \"reason\": \"Scorer became unresponsive\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/matches/{{matchId}}/admin/override",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["matches", "{{matchId}}", "admin", "override"]
+            }
+          }
+        },
+        {
+          "name": "Reassign Scorer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminAccessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"reassign_scorer\",\n  \"newScorerId\": \"550e8400-e29b-41d4-a716-446655440006\",\n  \"reason\": \"Original scorer had technical issues\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/matches/{{matchId}}/admin/override",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["matches", "{{matchId}}", "admin", "override"]
+            }
+          }
+        },
+        {
+          "name": "Get Match Audit History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminAccessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/matches/{{matchId}}/audit",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["matches", "{{matchId}}", "audit"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "adminAccessToken",
+      "value": ""
+    },
+    {
+      "key": "matchId",
+      "value": ""
+    }
+  ]
+}
