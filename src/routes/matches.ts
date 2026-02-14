@@ -102,14 +102,15 @@ router.get(
   '/teams',
   asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.query;
+    let where = {};
 
-    if (!userId) {
-      res.json({ data: [] });
-      return;
+    if (userId) {
+      where = { createdBy: userId };
+      console.log(`🔍 [DEBUG-VERIFY] Filtering for userId: '${userId}'`);
+    } else {
+      console.log(`🔍 [DEBUG-VERIFY] Fetching ALL teams (no userId provided)`);
     }
 
-    const where = { createdBy: userId };
-    console.log(`🔍 [DEBUG-VERIFY] Filtering for userId: '${userId}' (Type: ${typeof userId})`);
 
     const teams = await db.Team.findAll({
       where,

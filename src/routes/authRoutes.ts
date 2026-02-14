@@ -16,13 +16,14 @@ const router = Router();
  */
 router.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password, firstName, lastName } = req.body;
+    const { email, password, firstName, lastName, phoneNumber } = req.body;
 
     const user = await AuthService.register({
       email,
       password,
       firstName,
       lastName,
+      phoneNumber,
     });
 
     res.status(201).json(user);

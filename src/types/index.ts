@@ -23,6 +23,8 @@ export interface IUserResponse {
   firstName: string;
   lastName: string;
   role: string;
+  phoneNumber?: string;
+  fcmToken?: string;
 }
 
 // Team types
@@ -120,6 +122,7 @@ export interface IRegisterInput {
   password: string;
   firstName: string;
   lastName: string;
+  phoneNumber?: string;
 }
 
 export interface ILoginResponse {

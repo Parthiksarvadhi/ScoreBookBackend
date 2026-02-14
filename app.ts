@@ -34,11 +34,21 @@ app.get('/health', (req: Request, res: Response): void => {
 
 import uploadRoutes from './src/routes/uploadRoutes.js';
 import invitationRoutes from './src/routes/invitations.js';
+import teamsRoutes from './src/routes/teams.js';
 
 // ... existing code ...
 
 // Static files
 app.use('/uploads', express.static('public/uploads'));
+
+// Invite redirect page (for SMS deep links)
+app.get('/invite/:token', (req: Request, res: Response): void => {
+  res.sendFile('invite.html', { root: './public' });
+});
+
+import publicMatchesRoutes from './src/routes/publicMatches.js';
+// Public routes (No Auth Required)
+app.use('/public/matches', publicMatchesRoutes);
 
 // Authentication routes
 app.use('/auth', authRoutes);
@@ -47,6 +57,7 @@ app.use('/auth', authRoutes);
 app.use('/matches', authenticateToken as any);
 app.use('/upload', authenticateToken as any, uploadRoutes);
 app.use('/invitations', authenticateToken as any, invitationRoutes);
+app.use('/teams', authenticateToken as any, teamsRoutes);
 
 // Match management routes
 app.use('/matches', matchRoutes);

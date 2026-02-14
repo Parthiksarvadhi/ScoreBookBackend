@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScoreBook Invitation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .store-links {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🏏 ScoreBook</h1>
+
+        <!-- Loading State -->
+        <div id="loading">
+            <p>Opening your invitation...</p>
+            <div class="spinner"></div>
+        </div>
+
+        <!-- App Not Installed State -->
+        <div id="notInstalled" class="hidden">
+            <p>You've been invited to join a cricket team!</p>
+            <p style="font-size: 14px;">Install ScoreBook to accept your invitation</p>
+            <div class="store-links">
+                <a href="#" id="playStoreLink" class="btn">
+                    Download for Android
+                </a>
+                <!-- For future iOS support -->
+                <!-- <a href="#" id="appStoreLink" class="btn">Download for iOS</a> -->
+            </div>
+            <p style="font-size: 12px; margin-top: 30px; opacity: 0.7;">
+                After installing, open this link again to accept the invitation
+            </p>
+        </div>
+
+        <!-- Manual Open State -->
+        <div id="manualOpen" class="hidden">
+            <p>Tap below to open ScoreBook</p>
+            <a href="#" id="openBtn" class="btn">Open ScoreBook</a>
+            <p style="font-size: 14px; margin-top: 20px;">
+                If the app doesn't open, make sure ScoreBook is installed
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Get token from URL
+        const pathParts = window.location.pathname.split('/');
+        const token = pathParts[pathParts.length - 1];
+
+        // Create deep link
+        const deepLink = `scorebook://invite/${token}`;
+
+        // Set button href
+        document.getElementById('openBtn').href = deepLink;
+
+        // For production, replace with actual Play Store link
+        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.scorebook.parthik';
+        document.getElementById('playStoreLink').href = playStoreUrl;
+
+        // Try to open app automatically
+        setTimeout(() => {
+            window.location.href = deepLink;
+
+            // After 2.5 seconds, check if app opened
+            setTimeout(() => {
+                // If still on this page, app probably isn't installed
+                if (document.visibilityState === 'visible') {
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('notInstalled').classList.remove('hidden');
+                } else {
+                    // App likely opened, show manual button as fallback
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('manualOpen').classList.remove('hidden');
+                }
+            }, 2500);
+        }, 500);
+
+        // Listen for visibility changes (app opening will hide the page)
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                // App opened successfully
+                console.log('App opened');
+            }
+        });
+    </script>
+</body>
+
+</html>

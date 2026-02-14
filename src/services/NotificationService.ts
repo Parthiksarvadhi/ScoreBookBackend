@@ -46,7 +46,14 @@ export class NotificationService {
                 console.log('ℹ️ Firebase not initialized, skipping push send (Mock Success)');
                 return true;
             }
-        } catch (error) {
+        } catch (error: any) {
+            // Handle invalid/expired tokens gracefully
+            if (error.code === 'messaging/registration-token-not-registered' ||
+                error.code === 'messaging/invalid-registration-token') {
+                console.log(`⚠️ Invalid/expired FCM token. User needs to re-login to get new token.`);
+                return false;
+            }
+
             console.error('❌ Error sending push notification:', error);
             // Return false but don't crash the request
             return false;
